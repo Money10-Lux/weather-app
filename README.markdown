@@ -80,6 +80,8 @@ This is a weather application built with **Next.js** for frontend and **Laravel*
 
    ```
 
+   The Laravel server should now start correctly with php artisan serve, and accessing http://127.0.0.1:8000 displays the default Laravel welcome page.
+
 ### Frontend (Next.js)
 
 1. Navigate to the `frontend` directory:
