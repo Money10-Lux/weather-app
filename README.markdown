@@ -86,19 +86,46 @@ This is a weather application built with **Next.js** for frontend and **Laravel*
 
 ### Frontend (Next.js)
 
-1. Navigate to the `frontend` directory:
+1. Navigate to the root `weather-app` directory and initialize Next.js Project:
 
+   ```bash
+   npx create-next-app@latest frontend
+   ```
+  - Prompts:
+     - Typescript: Yes.
+     - ESLint: Yes.
+     - Tailwind CSS: Yes.
+     - src/ directory: No.
+     -  App Router: Yes.
+     -  Import alias: Default (@/*).
+      This creates path...\weather-app\frontend.
+
+   
+
+2. Install dependencies:
+   Navigate to frontend.
    ```bash
    cd frontend
    ```
-
-2. Install dependencies:
+   Install Axios for API requests:
 
    ```bash
-   npm install
+   npm install axios
    ```
+3. Add frontend code
+   path....\weather-app\frontend\components\WeatherDisplay.tsx
 
-3. Start the development server:
+   ```bash
+   mkdir components
+   echo. > components\WeatherDisplay.tsx
+   ```
+   Then incoporate the WeatherDisplay.tsx
+
+   Upadate the page.tsx
+  path...\weather-app\frontend\app\page.tsx
+
+4. Start the development server (front end):
+   Naviagte to `frontend` directory: cd path...\weather-app\frontend
 
    ```bash
    npm run dev
