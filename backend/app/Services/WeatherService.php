@@ -1,52 +1,48 @@
 <?php
-namespace App\Services;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Http;
-class WeatherService
+namespace App\Http\Controllers;
+use App\Services\WeatherService;
+use Illuminate\Routing\Controller;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+class WeatherController extends Controller
 {
-    protected $apiKey;
-    protected $baseUrl;
-    public function __construct()
+    // Changes: Added WeatherService to handle API calls to the weather service.
+    protected $weatherService;
+    public function __construct(WeatherService $weatherService)
     {
-        // Fetch the API key from the environment variables.
-        // If not set, use a default value (this should be replaced with your actual API key).
-        $this->apiKey = env('OPENWEATHERMAP_API_KEY', 'YOUR_API_KEY');
-        $this->baseUrl = 'https://api.openweathermap.org/data/2.5';
+        $this->weatherService = $weatherService;
     }
-    // Fetch the current weather data for a given city.
-    // This method caches the results for 10 minutes to reduce API calls.
-    public function fetchWeather(string $city): array
+    public function getWeather(Request $request): JsonResponse
     {
-        $cacheKey = "weather_{$city}";
-        $cacheDuration = 600;
-        return Cache::remember($cacheKey, $cacheDuration, function () use ($city) {
-            $response = Http::get("{$this->baseUrl}/weather", [
-                'q' => $city,
-                'appid' => $this->apiKey,
-                'units' => 'metric',
-            ]);
-            if ($response->failed()) {
-                throw new \Exception('Unable to fetch weather data from OpenWeatherMap');
-            }
-            return $response->json();
-        });
+        // Validate the request to ensure a city is provided
+        $city = $request->query('city');
+        if (!$city) {
+            return response()->json(['error' => 'City is required'], 400);
+        }
+        try {
+            // Fetch the weather data using the WeatherService
+            $weatherData = $this->weatherService->fetchWeather($city);
+            return response()->json(['data' => $weatherData]);
+        } catch (\Exception $e) {
+            // Handle any exceptions that occur during the API call
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
-    //Changes: Added fetchForecast to call OpenWeatherMap’s /forecast endpoint, caching results for 10 minutes.
-    public function fetchForecast(string $city): array
+    //Changes: Added getForecast to handle /api/forecast requests.
+    public function getForecast(Request $request): JsonResponse
     {
-        // Fetch the forecast data for a given city.
-        $cacheKey = "forecast_{$city}";
-        $cacheDuration = 600;
-        return Cache::remember($cacheKey, $cacheDuration, function () use ($city) {
-            $response = Http::get("{$this->baseUrl}/forecast", [
-                'q' => $city,
-                'appid' => $this->apiKey,
-                'units' => 'metric',
-            ]);
-            if ($response->failed()) {
-                throw new \Exception('Unable to fetch forecast data from OpenWeatherMap');
-            }
-            return $response->json();
-        });
+        // Validate the request to ensure a city is provided
+        $city = $request->query('city');
+        if (!$city) {
+            return response()->json(['error' => 'City is required'], 400);
+        }
+        try {
+            // Fetch the forecast data using the WeatherService
+            $forecastData = $this->weatherService->fetchForecast($city);
+            return response()->json(['data' => $forecastData]);
+        } catch (\Exception $e) {
+            // Handle any exceptions that occur during the API call
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 }
