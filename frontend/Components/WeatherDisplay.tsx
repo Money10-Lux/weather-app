@@ -4,7 +4,7 @@ interface WeatherData {
   main: { temp: number; feels_like: number; humidity: number; pressure: number };
   weather: { description: string; icon: string; id: number }[];
   wind: { speed: number; deg: number };
-  sys: { sunrise: number; sunset: number };
+  sys: { sunrise: number; sunset: number; country: string };
   name: string;
   dt: number;
 }
@@ -24,6 +24,7 @@ interface WeatherDisplayProps {
 const WeatherDisplay: React.FC<WeatherDisplayProps> = ({ weather, forecast, error }) => {
   const [isCelsius, setIsCelsius] = useState(true);
   const [isWindMs, setIsWindMs] = useState(true);
+  const [is24Hour, setIs24Hour] = useState(false);
 
   // Toggle temperature unit
   const toggleTempUnit = () => {
@@ -33,6 +34,11 @@ const WeatherDisplay: React.FC<WeatherDisplayProps> = ({ weather, forecast, erro
   // Toggle wind speed unit (m/s to km/h)
   const toggleWindUnit = () => {
     setIsWindMs(!isWindMs);
+  };
+
+  // Toggle between 12-hour and 24-hour clock
+  const toggleTimeFormat = () => {
+    setIs24Hour(!is24Hour);
   };
 
   // Convert temperature between Celsius and Fahrenheit
@@ -65,8 +71,8 @@ const WeatherDisplay: React.FC<WeatherDisplayProps> = ({ weather, forecast, erro
     return currentWarning || forecastWarnings;
   };
 
-  // Format date as "22nd April 2025 London" with superscript suffix
-  const formatDate = (timestamp: number, city: string) => {
+  // Format date and time as separate lines
+  const formatDateTime = (timestamp: number, city: string, country: string) => {
     const date = new Date(timestamp * 1000);
     const day = date.getDate();
     const suffix = (day: number) => {
@@ -83,7 +89,63 @@ const WeatherDisplay: React.FC<WeatherDisplayProps> = ({ weather, forecast, erro
       month: 'long',
       year: 'numeric',
     })}`;
-    return { formattedDate, suffixText, city };
+    const timeOptions: Intl.DateTimeFormatOptions = {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: !is24Hour,
+    };
+    const formattedTime = date.toLocaleTimeString('en-US', timeOptions).replace(/ AM| PM/i, (match) => match.toLowerCase());
+    return { formattedTime, formattedDate, suffixText, city, country };
+  };
+
+  // Generate clothing recommendation based on weather data
+  const getClothingRecommendation = () => {
+    if (!weather) return '';
+
+    const description = weather.weather[0].description.toLowerCase();
+    const temp = weather.main.temp; // Temperature in Celsius
+    const windSpeed = weather.wind.speed; // Wind speed in m/s
+    const humidity = weather.main.humidity;
+
+    let recommendation = '';
+
+    // Check for rain-related conditions
+    if (description.includes('rain') || description.includes('shower') || description.includes('thunderstorm')) {
+      recommendation = 'It might rain, carry an umbrella and a waterproof jacket.';
+    }
+    // Check for sunny/clear conditions
+    else if (description.includes('clear') || description.includes('sunny')) {
+      recommendation = 'It’s sunny, wear something light and consider sunglasses.';
+    }
+    // Check for cloudy conditions
+    else if (description.includes('cloud')) {
+      recommendation = 'It’s cloudy, a light jacket should be enough.';
+    }
+    // Default for other conditions (e.g., mist, haze)
+    else {
+      recommendation = 'Weather is uncertain, a light jacket is recommended.';
+    }
+
+    // Adjust based on temperature
+    if (temp < 10) {
+      recommendation += ' It’s cold, add a warm coat and scarf.';
+    } else if (temp >= 10 && temp < 20) {
+      recommendation += ' It’s cool, a sweater or jacket is recommended.';
+    } else if (temp >= 25) {
+      recommendation += ' It’s warm, opt for breathable fabrics.';
+    }
+
+    // Adjust based on wind speed
+    if (windSpeed > 5) { // Windy if speed > 5 m/s (18 km/h)
+      recommendation += ' It’s windy, consider a windbreaker.';
+    }
+
+    // Adjust based on humidity
+    if (humidity > 80) {
+      recommendation += ' High humidity, choose moisture-wicking clothing.';
+    }
+
+    return recommendation;
   };
 
   if (error) {
@@ -100,7 +162,13 @@ const WeatherDisplay: React.FC<WeatherDisplayProps> = ({ weather, forecast, erro
     : [];
 
   const severeWarning = getSevereWeatherWarning();
-  const { formattedDate, suffixText, city } = formatDate(weather.dt, weather.name);
+  const { formattedTime, formattedDate, suffixText, city, country } = formatDateTime(
+    weather.dt,
+    weather.name,
+    weather.sys.country
+  );
+
+  const clothingRecommendation = getClothingRecommendation();
 
   return (
     <div className="bg-gradient-to-br from-blue-600 to-blue-800 p-8 rounded-xl shadow-xl max-w-5xl w-full relative">
@@ -115,7 +183,9 @@ const WeatherDisplay: React.FC<WeatherDisplayProps> = ({ weather, forecast, erro
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left Panel: Main Weather Info with Boundary */}
         <div className="col-span-1 bg-blue-700 p-6 rounded-lg border border-blue-400 shadow-md">
-          <h2 className="text-4xl font-bold text-white mb-4">{weather.name}</h2>
+          <h2 className="text-4xl font-bold text-white mb-4">
+            {city} - {country}
+          </h2>
           <div className="flex items-center gap-4 mb-4">
             <img
               src={`http://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`}
@@ -148,22 +218,39 @@ const WeatherDisplay: React.FC<WeatherDisplayProps> = ({ weather, forecast, erro
               <p>Potential severe weather conditions detected. Stay safe!</p>
             </div>
           )}
-          {/* Date at the Bottom with Superscript Suffix */}
-          <p className="text-xl text-white mt-6">
-            {formattedDate.split(' ').map((part, index) => (
-              <span key={index}>
-                {index === 0 ? (
-                  <span>
-                    {part}
-                    <sup>{suffixText}</sup>
-                  </span>
-                ) : (
-                  <span> {part}</span>
-                )}
-              </span>
-            ))}{' '}
-            {city}
-          </p>
+          {/* Clothing Recommendation */}
+          {clothingRecommendation && (
+            <div className="mt-4 p-3 bg-blue-500 text-white rounded-md">
+              <p className="font-bold">What to Wear:</p>
+              <p>{clothingRecommendation}</p>
+            </div>
+          )}
+          {/* Time and Date with Toggle */}
+          <div className="mt-6">
+            <div className="flex justify-between items-center mb-2">
+              <p className="text-xl text-white">Retrieved at: {formattedTime}</p>
+              <button
+                onClick={toggleTimeFormat}
+                className="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-400 transition"
+              >
+                {is24Hour ? '12h' : '24h'}
+              </button>
+            </div>
+            <p className="text-xl text-white">
+              {formattedDate.split(' ').map((part, index) => (
+                <span key={index}>
+                  {index === 0 ? (
+                    <span>
+                      {part}
+                      <sup>{suffixText}</sup>
+                    </span>
+                  ) : (
+                    <span> {part}</span>
+                  )}
+                </span>
+              ))}
+            </p>
+          </div>
         </div>
 
         {/* Center-Right Panel: 5-Day Forecast and Additional Info */}
@@ -275,3 +362,5 @@ export default WeatherDisplay;
 //Boundary: Added bg-blue-700 p-6 rounded-lg border border-blue-400 shadow-md 
 // to the left panel’s div to give it a distinct background, padding, rounded corners, 
 // a light blue border, and a subtle shadow for visual separation.
+
+
