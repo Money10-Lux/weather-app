@@ -37,6 +37,8 @@ This is a weather application built with **Next.js** for frontend and **Laravel*
    ;extension=fileinfo to extension=fileinfo
    ```
 
+   with successful installation of composer the `vendor` directory should now exist in the `backend` directory
+
 4. Copy `.env.example` to `.env` and add your OpenWeatherMap API key in the .env file:
 
    ```env
