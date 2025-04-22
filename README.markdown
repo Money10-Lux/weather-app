@@ -132,12 +132,16 @@ This is a weather application built with **Next.js** for frontend and **Laravel*
    ```
 
    The app will be available at `http://localhost:3000`.
+5. Ensure Backend is Running:
+   ```bash
+   php artisan serve
+   ```
 
 ## Features
 
 - Search for weather by city name.
-- Display temperature, condition, humidity, and wind speed.
-- Responsive design with RippleUI components.
+- Display temperature, condition, humidity, and wind speed and direction.
+- Responsive design with RippleUI components
 - Error handling and loading states.
 - Cached API responses for performance.
 
