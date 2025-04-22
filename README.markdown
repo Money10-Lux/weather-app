@@ -67,10 +67,6 @@ A decoupled weather application built with **Next.js** (frontend) and **Laravel*
 
    The app will be available at `http://localhost:3000`.
 
-## API Endpoints
-
-- **GET /api/weather?city={city_name}**: Fetch weather data for a given city.
-
 ## Features
 
 - Search for weather by city name.
@@ -78,15 +74,6 @@ A decoupled weather application built with **Next.js** (frontend) and **Laravel*
 - Responsive design with RippleUI components.
 - Error handling and loading states.
 - Cached API responses for performance.
-
-## GitHub Commit Messages
-
-Commits follow the conventional commits format:
-
-- `feat`: New features
-- `fix`: Bug fixes
-- `chore`: Maintenance tasks
-- `docs`: Documentation updates
 
 ## License
 
