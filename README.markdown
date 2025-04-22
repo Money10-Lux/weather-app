@@ -45,6 +45,7 @@ This is a weather application built with **Next.js** for frontend and **Laravel*
    composer create-project laravel/laravel .
    ```
    this will create the full project structure, including: artisan, app/, routes/ composer.json and vendor/
+   then integrate Weather App Codes (e.g., WeatherController.php, WeatherService.php, api.php, composer.json) into the new Laravel           project.
 
 4. Copy `.env.example` to `.env` and add your OpenWeatherMap API key in the .env file:
 
