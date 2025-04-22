@@ -32,7 +32,7 @@ This is a weather application built with **Next.js** for frontend and **Laravel*
    
    In php.ini, ensure the extension_dir is correctly set to point to the ext folder, that is, extension_dir = "path to/php/ext" by using     forward slashes. then try installation again.
 
-   The `file extension` error is encountered then open your "path\php\php.ini" and enable file info extension by removing semicolons (;)     then run composer install again:
+   If the `file extension` error is encountered then open your "path\php\php.ini" and enable file info extension by removing semicolons (;)     then run composer install again:
    ```bash
    extension=fileinfo
    extension=openssl
@@ -81,6 +81,8 @@ This is a weather application built with **Next.js** for frontend and **Laravel*
    ```
 
    The Laravel server should now start correctly with php artisan serve, and accessing http://127.0.0.1:8000 displays the default Laravel welcome page.
+   ### Test in Browser:
+   - Visit http://127.0.0.1:8000/api/weather?city=Nairobi
 
 ### Frontend (Next.js)
 
