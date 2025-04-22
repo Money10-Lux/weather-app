@@ -159,6 +159,17 @@ This is a weather application built with **Next.js** for frontend and **Laravel*
 ### frontend Display page - contains warning
 ![image](https://github.com/user-attachments/assets/b80d849d-40f3-498e-8374-840e6a15e761)
 
+### Responsive 1
+![image](https://github.com/user-attachments/assets/58c6463c-3259-40fd-bbb3-b32aa39701e3)
+
+### REsponsive 2
+![image](https://github.com/user-attachments/assets/03a1bebc-162a-45c0-ad24-1b35b9e01139)
+
+### UI with Updates
+![image](https://github.com/user-attachments/assets/946bf18a-3bb7-4dc3-a8f6-b939816fa207)
+
+
+
 
 ## License
 
