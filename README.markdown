@@ -34,7 +34,9 @@ This is a weather application built with **Next.js** for frontend and **Laravel*
 
    The `file extension` error is encountered then open your "path\php\php.ini" and enable file info extension by removing semicolons (;)     then run composer install again:
    ```bash
-   ;extension=fileinfo to extension=fileinfo
+   extension=fileinfo
+   extension=openssl
+
    ```
 
    with successful installation of composer the `vendor` directory should now exist in the `backend` directory
@@ -66,6 +68,17 @@ This is a weather application built with **Next.js** for frontend and **Laravel*
    ```
 
    The API will be available at `http://localhost:8000`.
+
+   If you get a database error then you can switch to file since the weather app may not need a database.
+   Change the session driver to file, (storage/framework/sessions) instead of a database. This avoids the need for database.sqlite.
+
+   Update `.env`
+   ```bash
+   SESSION_DRIVER=file
+   CACHE_DRIVER=file
+   CACHE_STORE=file
+
+   ```
 
 ### Frontend (Next.js)
 
