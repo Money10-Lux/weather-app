@@ -39,6 +39,13 @@ This is a weather application built with **Next.js** for frontend and **Laravel*
 
    with successful installation of composer the `vendor` directory should now exist in the `backend` directory
 
+   If `composer.json` and `artisan` files are missing, then create a fresh Laravel project in the `backend` directory
+
+   ```bash
+   composer create-project laravel/laravel .
+   ```
+   this will create the full project structure, including: artisan, app/, routes/ composer.json and vendor/
+
 4. Copy `.env.example` to `.env` and add your OpenWeatherMap API key in the .env file:
 
    ```env
