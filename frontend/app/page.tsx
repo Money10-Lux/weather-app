@@ -17,12 +17,16 @@ export default function Home() {
   const [weatherData, setWeatherData] = useState(null);
   const [forecastData, setForecastData] = useState(null);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   // Function to fetch weather data from the API
   // It uses axios to make GET requests to the backend API
   // The function is triggered on form submission
   const fetchWeather = async (e: FormEvent) => {
     e.preventDefault();
+    if (!city.trim()) return; // Prevent fetch if city is empty
+
+    setLoading(true);
     setError(null);
     setWeatherData(null);
     setForecastData(null);
@@ -42,8 +46,11 @@ export default function Home() {
       setForecastData(forecastResponse.data.data.list);
     } catch (err: any) {
       setError(err.response?.data?.error || 'Failed to fetch weather data');
+    } finally {
+      setLoading(false);
     }
   };
+
   // The component returns a JSX structure
   // It includes a form for user input, a button to fetch data, and a display area for results
   // The form uses Tailwind CSS classes for styling and responsiveness
@@ -58,15 +65,14 @@ export default function Home() {
           placeholder="Enter city"
           className="p-3 bg-gray-800 text-white border border-gray-600 rounded-l-md flex-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
-        
         <button
           type="submit"
-          className="p-3 bg-blue-500 text-white rounded-r-md hover:bg-blue-600 transition"
+          className="p-3 bg-blue-500 text-white rounded-r-md hover:bg-blue-600 transition cursor-pointer"
+          disabled={loading}
         >
-          Get Weather
+          {loading ? 'Loading...' : 'Get Weather'}
         </button>
       </form>
-      
       <WeatherDisplay weather={weatherData} forecast={forecastData} error={error} />
     </main>
   );
