@@ -25,20 +25,31 @@ This is a weather application built with **Next.js** for frontend and **Laravel*
    ```bash
    composer install
    ```
+   if you run into an error during 'composer install' due to difficulty in loading the PHP openssl, then,
+   
+   Enable the OpenSSL Extension in php.ini by removing the semicolon (;) at the beggining of ;extension=openssl to enable the extension,
+   so it reads, extension=openssl
+   
+   In php.ini, ensure the extension_dir is correctly set to point to the ext folder, that is, extension_dir = "path to/php/ext" by using     forward slashes. then try installation again.
 
-3. Copy `.env.example` to `.env` and add your OpenWeatherMap API key:
+   The `file extension` error is encountered then open your "path\php\php.ini" and enable file info extension by removing semicolons (;)     then run composer install again:
+   ```bash
+   ;extension=fileinfo to extension=fileinfo
+   ```
+
+4. Copy `.env.example` to `.env` and add your OpenWeatherMap API key in the .env file:
 
    ```env
    OPENWEATHERMAP_API_KEY=your_api_key
    ```
 
-4. Generate an app key:
+5. Generate an app key:
 
    ```bash
    php artisan key:generate
    ```
 
-5. Start the Laravel server:
+6. Start the Laravel server:
 
    ```bash
    php artisan serve
