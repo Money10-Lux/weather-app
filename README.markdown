@@ -1,12 +1,12 @@
 # Weather App
 
-A decoupled weather application built with **Next.js** (frontend) and **Laravel** (backend), integrated with the OpenWeatherMap API.
+This is a weather application built with **Next.js** for frontend and **Laravel** for backend, integrated with the OpenWeatherMap API for weather data.
 
 # Prerequisites
 
 - Node.js (&gt;= 18.x)
-- PHP (&gt;= 8.2)
-- Composer
+- PHP (&gt;= 8.4.6)
+- Composer (&gt;= 2.8.8)
 - OpenWeatherMap API key (sign up at https://openweathermap.org/api)
 
 ## Setup Instructions
