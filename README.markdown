@@ -76,6 +76,21 @@ This is a weather application built with **Next.js** for frontend and **Laravel*
 - Error handling and loading states.
 - Cached API responses for performance.
 
+## Screenshots
+
+### backend
+![image](https://github.com/user-attachments/assets/a602e790-c265-4630-8703-2be45d19ab34)
+
+### frontend welcoming page
+![image](https://github.com/user-attachments/assets/c7fc8145-b80a-4fc9-9206-54fa26318362)
+
+### frontend Display page
+![image](https://github.com/user-attachments/assets/e03a18d1-c62b-4c1c-8353-6fd1cb6fcb72)
+
+### frontend Display page - contains warning
+![image](https://github.com/user-attachments/assets/b80d849d-40f3-498e-8374-840e6a15e761)
+
+
 ## License
 
 MIT
