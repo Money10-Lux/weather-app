@@ -24,4 +24,18 @@ class WeatherController extends Controller
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
+     //Changes: Added getForecast to handle /api/forecast requests.
+     public function getForecast(Request $request): JsonResponse
+     {
+         $city = $request->query('city');
+         if (!$city) {
+             return response()->json(['error' => 'City is required'], 400);
+         }
+         try {
+             $forecastData = $this->weatherService->fetchForecast($city);
+             return response()->json(['data' => $forecastData]);
+         } catch (\Exception $e) {
+             return response()->json(['error' => $e->getMessage()], 500);
+         }
+     }
 }
