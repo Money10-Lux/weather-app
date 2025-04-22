@@ -2,9 +2,10 @@
 
 This is a weather application built with **Next.js** for frontend and **Laravel** for backend, integrated with the OpenWeatherMap API for weather data.
 
-# Prerequisites
+## Prerequisites
 
-- Node.js (&gt;= 18.x)
+- Node.js (&gt;= 22.14.0)
+- Laravel Framework (&gt;= 12.9.2)
 - PHP (&gt;= 8.4.6)
 - Composer (&gt;= 2.8.8)
 - OpenWeatherMap API key (sign up at https://openweathermap.org/api)
